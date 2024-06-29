@@ -7,8 +7,6 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -30,10 +28,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       
-    # Runs a single command using the runners shell
-    - name: Run a one-line script
-      run: echo Hello, world!
-    
     # Configure Worklaod Identity Federation and generate an access token  
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
@@ -44,16 +38,7 @@ jobs:
           service_account: '${{ secrets.SA_EMAIL }}'
           
     - id: 'gcloud'
-      name: 'gcloud storage access'
+      name: 'Access Google Cloud Bucket'
       run: |-
-        # gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
-        # gcloud storage ls gs://stef-actions-bucket-1
-        #gcloud storage --project 'demowif' ls gs://stef-actions-bucket-1
         gcloud storage ls gs://stef-actions-bucket-1
-
-      # Runs a set of commands using the runners shell
-      #- name: Run a multi-line script
-      #  run: |
-      #    echo Add other actions to build,
-      #    echo test, and deploy your project.
-
+        gcloud storage cat gs://stef-actions-bucket-1/README.txt
