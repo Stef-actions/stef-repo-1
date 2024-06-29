@@ -37,10 +37,8 @@ jobs:
     # Configure Worklaod Identity Federation and generate an access token  
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v1'
+      uses: 'google-github-actions/auth@v2'
       with:
-          # create_credentials_file: 'true'
-          token_format: 'acces_token'
           workload_identity_provider: '${{ secrets.WIF_PROVIDER }}'
           service_account: '${{ secrets.SA_EMAIL }}'
           
@@ -49,6 +47,7 @@ jobs:
       run: |-
         # gcloud auth login --brief --cred-file="${{ steps.auth.outputs.credentials_file_path }}"
         # gcloud storage ls gs://stef-actions-bucket-1
+        #gcloud storage --project 'demowif' ls gs://stef-actions-bucket-1
         gcloud storage --project 'demowif' ls gs://stef-actions-bucket-1
 
       # Runs a set of commands using the runners shell
